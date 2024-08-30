@@ -1,11 +1,14 @@
+//used to wait for DOM to load before executing the code
 document.addEventListener('DOMContentLoaded', () => {
   const pokemonGrid = document.getElementById('pokemon-grid');
 
-  // Function to create a grid item
+  //function to capitalize the first letter of a string
   const capitalize = (str) => {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
+
+  // Function to create a grid item
   const createGridItem = (pokemon) => {
     const button = document.createElement('button');
     button.className = 'grid-item';
