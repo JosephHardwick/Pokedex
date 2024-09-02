@@ -10,6 +10,25 @@ body {
     background-attachment: fixed; /* Optional: to keep the background image fixed */
 }
 
+    .topnav {
+      background-color: blue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50px;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      filter: pixelate(5px);
+    }
+
+    .topnav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+  
 h1 {
   margin: 20px 0;
 }
