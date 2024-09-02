@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const id = urlParams.get('id');
   console.log('id:', id);
 
+  //method to capitalize the first letter of a string
   const capitalize = (str) => {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();

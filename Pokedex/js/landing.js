@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const pokemonGrid = document.getElementById('pokemon-grid');
 
+  // Function to capitalize the first letter of a string
   const capitalize = (str) => {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
 
+  // Function to create a grid item for a Pokemon
   const createGridItem = (pokemon) => {
     const button = document.createElement('button');
     button.className = 'grid-item';
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.appendChild(img);
     button.appendChild(name);
 
+    // Event listener for button click to navigate to Pokemon info page
     button.addEventListener('click', () => {
       const queryParams = new URLSearchParams({
         id: pokemon.id
@@ -30,31 +33,32 @@ document.addEventListener('DOMContentLoaded', () => {
     return button;
   };
 
+  // Function to fetch Pokemon data for a specific generation
   const fetchPokemonData = async (generationId) => {
     try {
-      // Send a GET request to the PokeAPI to fetch data for the specified generation
+      //API GET request to pull all pokemon for a given generation
       const response = await fetch(`https://pokeapi.co/api/v2/generation/${generationId}`);
-      // Parse the response as JSON
+      //parses the response into json
       const data = await response.json();
-      // Use Promise.all to fetch data for each Pokemon species in the generation
-      const pokemonList = await Promise.all(data.pokemon_species.map(async (species) => {
-        // Send a GET request to fetch data for the specific Pokemon species
-        const pokemonResponse = await fetch(species.url);
-        // Parse the response as JSON
-        const pokemonData = await pokemonResponse.json();
-        // Fetch additional details for the Pokemon
-        const pokemonDetailsResponse = await fetch(pokemonData.varieties[0].pokemon.url);
-        // Parse the response as JSON
-        const pokemonDetails = await pokemonDetailsResponse.json();
-        // Return an object containing the Pokemon's ID, name, and image URL
-        return {
-          id: pokemonDetails.id,
-          name: pokemonDetails.name,
-          image: pokemonDetails.sprites.front_default
-        };
-      }));
-
-      pokemonGrid.innerHTML = ''; // Clear existing grid
+        //creates list of pekemon from json data
+        const pokemonList = await Promise.all(data.pokemon_species.map(async (species) => {
+          //pulls URLs from previous request
+          const pokemonResponse = await fetch(species.url);
+          //parses data for specific pokemon
+          const pokemonData = await pokemonResponse.json();
+          //pulls data for specific pokemon
+          const pokemonDetailsResponse = await fetch(pokemonData.varieties[0].pokemon.url);
+          const pokemonDetails = await pokemonDetailsResponse.json();
+          
+          return {
+            id: pokemonDetails.id,
+            name: pokemonDetails.name,
+            image: pokemonDetails.sprites.front_default
+          };
+        }));
+      // Clear existing grid
+      pokemonGrid.innerHTML = ''; 
+      // Create grid items for each Pokemon
       pokemonList.forEach((pokemon) => {
         const gridItem = createGridItem(pokemon);
         pokemonGrid.appendChild(gridItem);
